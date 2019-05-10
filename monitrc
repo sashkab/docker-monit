@@ -1,0 +1,60 @@
+###############################################################################
+## Monit control file
+###############################################################################
+
+set daemon  60
+   with start delay 30
+
+set log /dev/stdout
+
+set pidfile /monit/run/monit.pid
+set idfile /monit/.monit.id
+set statefile /monit/.monit.state
+
+set mailserver smtp.domain.com port 25
+    using TLSV1 with timeout 30 seconds
+
+set eventqueue
+    basedir /monit/monit
+    slots 100
+
+
+set mail-format {
+ from: monit@$HOST
+ reply-to: user@domain.com
+ subject: [monit] Event on $HOST at $DATE
+ message:
+Event: $EVENT
+Service: $SERVICE
+Date: $DATE
+Action: $ACTION
+Host: $HOST
+Description: $DESCRIPTION
+
+Your faithful employee,
+Monit
+}
+
+set alert user@domain.com WITH REMINDER ON 120 cycles
+
+set httpd port 2812 and
+   use address localhost
+   allow localhost
+   allow admin:monit
+#    with ssl {
+#        pemfile: /etc/ssl/certs/monit.pem
+#   }
+
+
+check host DNS with address 1.1.1.1
+   if failed ping then alert
+
+check host SMTP with address smtp.domain.com
+   if failed ping then alert
+   if failed port 25 protocol smtp then alert
+   if failed port 587 protocol smtp then alert
+
+check host www.domain.com with address www.domain.com
+   if failed ping then alert
+   if failed port 80 protocol http and request / with status = 301 then alert
+   if failed port 80 protocol http and request / with HTTP HEADERS [Location: "https://www.domain.com/"] then alert
