@@ -1,8 +1,8 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 LABEL \
     maintainer="github@compuix.com" \
-    version="2019.05.10" \
+    version="2019.07.12" \
     description="Monit monitoring service."
 
 COPY monitrc /etc/monitrc.new
