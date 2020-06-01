@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12.0
 
 LABEL maintainer="github@compuix.com" version="2020.03.11" description="Monit monitoring service."
 
