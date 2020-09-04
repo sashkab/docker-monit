@@ -1,17 +1,19 @@
-FROM alpine:3.12.0
+FROM alpine:3.12
 
-LABEL maintainer="github@compuix.com" version="2020.03.11" description="Monit monitoring service."
+LABEL maintainer="github@compuix.com" version="2020.09.04" description="Monit monitoring service."
 
-COPY run.sh /usr/bin/run.sh
+COPY run_monit.sh /usr/bin/run_monit.sh
+COPY letsencrypt.txt /usr/local/share/ca-certificates/letsencrypt.crt
 
 RUN set -xe \
-    && apk add --no-cache monit tzdata bash \
+    && apk add --no-cache monit tzdata bash ca-certificates \
     && ln -sfn /usr/share/zoneinfo/America/New_York /etc/localtime \
     && mkdir -p /monit/run \
     && monit -t \
     && rm /etc/monitrc \
-    && chmod +x /usr/bin/run.sh
+    && chmod +x /usr/bin/run_monit.sh \
+    && update-ca-certificates
 
 VOLUME [ "/monit" ]
 
-CMD ["/usr/bin/run.sh"]
+CMD [ "/usr/bin/run_monit.sh" ]
