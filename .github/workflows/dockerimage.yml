@@ -1,4 +1,4 @@
-name: Build caddy1 image
+name: Build monit image
 
 on:
   push:
