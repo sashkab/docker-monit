@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-LABEL maintainer="github@compuix.com" version="2020.09.04" description="Monit monitoring service."
+LABEL maintainer="github@compuix.com" version="2021.01.01" description="Monit monitoring service."
 
 COPY run_monit.sh /usr/bin/run_monit.sh
 COPY letsencrypt.txt /usr/local/share/ca-certificates/letsencrypt.crt
