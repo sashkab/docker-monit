@@ -4,12 +4,6 @@ LABEL maintainer="github@compuix.com" version="2021.09.10" description="Monit mo
 
 COPY run_monit.sh /usr/bin/run_monit.sh
 
-# Certifacates are from https://letsencrypt.org/certificates/
-COPY lets-encrypt-e1.pem \
-     lets-encrypt-e2.pem \
-     lets-encrypt-r3-cross-signed.pem \
-     lets-encrypt-r4-cross-signed.pem  /usr/local/share/ca-certificates/
-
 RUN set -xe \
     && apk add --no-cache monit tzdata bash ca-certificates \
     && ln -sfn /usr/share/zoneinfo/America/New_York /etc/localtime \
@@ -17,8 +11,14 @@ RUN set -xe \
     && monit -t \
     && rm /etc/monitrc \
     && chmod +x /usr/bin/run_monit.sh \
+    && wget -q -P /usr/local/share/ca-certificates/ \
+        https://letsencrypt.org/certs/lets-encrypt-r3.pem \
+        https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem \
+        https://letsencrypt.org/certs/lets-encrypt-e1.pem \
+        https://letsencrypt.org/certs/lets-encrypt-r4.pem \
+        https://letsencrypt.org/certs/lets-encrypt-r4-cross-signed.pem \
+        https://letsencrypt.org/certs/lets-encrypt-e2.pem  \
     && update-ca-certificates
-
 VOLUME [ "/monit" ]
 
 CMD [ "/usr/bin/run_monit.sh" ]
