@@ -1,8 +1,8 @@
-FROM alpine:3.14.2
+FROM alpine:3.14.3
 
-LABEL maintainer="github@compuix.com" version="2021.09.10" description="Monit monitoring service."
+LABEL maintainer="github@compuix.com" version="2021.11.13" description="Monit monitoring service."
 
-COPY run_monit.sh /usr/bin/run_monit.sh
+COPY run_monit.sh /usr/bin/run_monit.sh'
 
 RUN set -xe \
     && apk add --no-cache monit tzdata bash ca-certificates \
