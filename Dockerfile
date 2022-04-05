@@ -1,6 +1,9 @@
-FROM alpine:3.15.3
+FROM alpine:3.15.4
 
-LABEL maintainer="github@compuix.com" version="2022.03.30" description="Monit monitoring service."
+LABEL \
+    maintainer="github@compuix.com"\
+    version="2022.04.05" \
+    description="Monit monitoring service."
 
 COPY run_monit.sh /usr/bin/run_monit.sh
 
