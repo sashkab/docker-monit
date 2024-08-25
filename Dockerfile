@@ -2,26 +2,28 @@ FROM alpine:3.20.2
 
 LABEL \
     maintainer="github@compuix.com"\
-    version="2024.07.23" \
+    version="2024.08.25" \
     description="Monit monitoring service."
 
 COPY run_monit.sh /usr/bin/run_monit.sh
 
 RUN set -xe \
-    && apk add --no-cache monit tzdata bash ca-certificates \
+    && apk add --no-cache monit tzdata bash ca-certificates fping \
     && ln -sfn /usr/share/zoneinfo/America/New_York /etc/localtime \
     && mkdir -p /monit/run \
     && monit -t \
     && rm /etc/monitrc \
     && chmod +x /usr/bin/run_monit.sh \
     && wget -q -P /usr/local/share/ca-certificates/ \
-        https://letsencrypt.org/certs/lets-encrypt-r3.pem \
-        https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem \
-        https://letsencrypt.org/certs/lets-encrypt-e1.pem \
-        https://letsencrypt.org/certs/lets-encrypt-r4.pem \
-        https://letsencrypt.org/certs/lets-encrypt-r4-cross-signed.pem \
-        https://letsencrypt.org/certs/lets-encrypt-e2.pem  \
+    https://letsencrypt.org/certs/2024/e5.pem \
+    https://letsencrypt.org/certs/2024/e5-cross.pem \
+    https://letsencrypt.org/certs/2024/e6.pem \
+    https://letsencrypt.org/certs/2024/e6-cross.pem \
+    https://letsencrypt.org/certs/2024/r10.pem \
+    https://letsencrypt.org/certs/2024/r11.pem \
     && update-ca-certificates
 VOLUME [ "/monit" ]
 
 CMD [ "/usr/bin/run_monit.sh" ]
+
+# Let's Encrypt Certiciates - https://letsencrypt.org/certificates/
