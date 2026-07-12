@@ -8,7 +8,7 @@ LABEL \
 COPY run_monit.sh /usr/bin/run_monit.sh
 
 RUN set -xe \
-    && apk add --no-cache monit tzdata bash ca-certificates fping \
+    && apk add --no-cache monit tzdata bash ca-certificates fping nmap-ncat \
     && ln -sfn /usr/share/zoneinfo/America/New_York /etc/localtime \
     && mkdir -p /monit/run \
     && monit -t \
