@@ -16,12 +16,12 @@ env:
 jobs:
   push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - uses: actions/checkout@v7
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Build image
         run: docker build . --file Dockerfile --tag image
@@ -31,9 +31,15 @@ jobs:
           docker run --rm image wget -S -O /tmp/xxx -q https://letsencrypt.org
           docker run --rm image wget -S -O /tmp/xxx -q https://google.com
 
+      - name: Log into registry
+        if: github.event_name != 'pull_request'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Push image
+        if: github.event_name != 'pull_request'
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           VERSION=$(date "+%Y.%m.%d")
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
