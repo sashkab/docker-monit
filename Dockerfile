@@ -1,8 +1,8 @@
-FROM alpine:3.24.1
+FROM alpine:3.24.3
 
 LABEL \
     maintainer="github@compuix.com"\
-    version="2026.06.21" \
+    version="2026.10.22" \
     description="Monit monitoring service."
 
 COPY run_monit.sh /usr/bin/run_monit.sh
